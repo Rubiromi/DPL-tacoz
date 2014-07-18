@@ -1,0 +1,2 @@
+module OnmiauthCallbacksHelper
+end
