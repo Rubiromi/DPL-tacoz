@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
 
   devise_for :users, controllers: {omniauth_callbacks: 'omniauth_callbacks'}
@@ -9,6 +11,7 @@ Rails.application.routes.draw do
   resources :locations, only: [:index, :show]
   get '/search' => 'search_results#index'
 
+  mount Sidekiq::Web => '/sidekiq'
   namespace :admin do
     get '/' => 'base#index'
     resources :menu_items

@@ -1,4 +1,5 @@
 class Location < ActiveRecord::Base
+  include Indexable
   include PgSearch
   # pg_search_scope :search, against: [:street_address, :city, :state]
   multisearchable against: [:street_address, :city, :state]
@@ -12,6 +13,7 @@ class Location < ActiveRecord::Base
                                 reject_if: ->(emp_attrs) { emp_attrs['name'].blank? }
 
   after_initialize :add_employee
+  after_update :update_search_index
 
   def address
     # 1234 Some St. Apt 4, Salt Lake City, UT 84123, US
@@ -27,5 +29,6 @@ class Location < ActiveRecord::Base
   def add_employee
     employees.build if employees.empty?
   end
+
 
 end

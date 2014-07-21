@@ -1,4 +1,5 @@
 class MenuItem < ActiveRecord::Base
+  include Indexable
   include PgSearch
   multisearchable against: [:name, :description]
 
@@ -17,6 +18,8 @@ class MenuItem < ActiveRecord::Base
       ingredients.build
     end
   end
+
+  after_update :update_search_index
 
   def to_param
     "#{id}-#{name.parameterize}"
